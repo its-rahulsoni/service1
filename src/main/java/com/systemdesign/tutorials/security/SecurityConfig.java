@@ -28,7 +28,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())   // Disables CSRF protection
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login").permitAll()  // Allow unauthenticated access to /login
+                        .requestMatchers("/login","/api1/health").permitAll()  // Allow unauthenticated access to /login
                         .anyRequest().authenticated()           // Protect all other endpoints
                 )
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
