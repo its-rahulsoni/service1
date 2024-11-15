@@ -1,0 +1,32 @@
+status: warn
+name: PropertiesConfig
+
+# Appender Configuration - Console and File Appenders
+appenders:
+  # Console Appender - For printing logs to the console
+  - Console:
+      name: Console
+      target: SYSTEM_OUT
+      pattern: "%d{ISO8601} [%t] %-5level %logger{36} - %msg%n"
+
+  # File Appender - Writing logs to a file inside the container
+  - File:
+      name: FileAppender
+      fileName: "/app/logs/service1.log"  # Log file path inside the container
+      filePattern: "/app/logs/$${date:yyyy-MM}/myapp-%d{MM-dd-yyyy}-%i.log"
+      ignoreExceptions: false
+      policies:
+        - SizeBasedTriggeringPolicy:
+            size: 10MB
+      strategy:
+        - DefaultRolloverStrategy:
+            max: 10
+      pattern: "%d{ISO8601} [%t] %-5level %logger{36} - %msg%n"
+
+loggers:
+  # Root Logger
+  root:
+    level: info
+    appenderRefs:
+      - ref: Console
+      - ref: FileAppender
